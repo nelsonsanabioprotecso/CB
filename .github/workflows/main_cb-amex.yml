@@ -2,22 +2,18 @@
 # Build a Python project (using Django/Flask/Bottle frameworks) and deploy it to Azure as a Linux web app.
 name: Deploy Python package to Azure Web App as a Linux web app - CB-AMEX.
 on:
-  [push]
-# CONFIGURATION
-# For help, go to https://github.com/Azure/Actions
-# See this in-depth article on CI for Python applications: https://azure.github.io/AppService/2020/12/11/cicd-for-python-apps.html
-#
-# 1. Set up the following secrets in your repository:
-#   AZURE_CREDENTIALS_GITHUB_SECRET
-#
-# 2. Change these variables for your configuration:
+  push:
+    branches:
+      - main
+    workflow_dispatch:
+
 env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
   AZURE_WEBAPP_NAME: my-app     # set this to your application's name
   WORKING_DIRECTORY: '.'        # set this to the path to your path of working directory inside github repository, defaults to the repository root
   PYTHON_VERSION: '3.11'        # set the version to use
   STARTUP_COMMAND: ''           # set this to the startup command required to start the gunicorn server. default it is empty
 
-name: Build and deploy Python app
 jobs:
  build-and-deploy:
   runs-on: ubuntu-latest
