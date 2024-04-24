@@ -35,22 +35,9 @@ jobs:
      source antenv/bin/activate
      pip install setuptools
      pip install -r requirements.txt
-  # Azure login
-  - uses: azure/login@v1
-    with:
-     creds: ${{ secrets.AZURE_CREDENTIALS_GITHUB_SECRET }}
-  - uses: azure/appservice-settings@v1
-    with:
-     app-name: ${{ env.AZURE_WEBAPP_NAME }}
-     mask-inputs: false
-     general-settings-json: '{"linuxFxVersion": "PYTHON|${{ env.PYTHON_VERSION }}"}' #'General configuration settings as Key Value pairs'
   # deploy web app
   - uses: azure/webapps-deploy@v2
     with:
      app-name: ${{ env.AZURE_WEBAPP_NAME }}
      package: ${{ env.WORKING_DIRECTORY }}
      startup-command: ${{ env.STARTUP_COMMAND }}
-  # Azure logout
-  - name: logout
-    run: |
-     az logout
