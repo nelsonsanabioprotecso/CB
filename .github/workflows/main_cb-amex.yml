@@ -51,12 +51,10 @@ jobs:
 
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
-
       with:
 	app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         slot-name: 'Production'
-        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        package: app.zip
         scm-do-build-during-deployment: true
         enable-oryx-build: true
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0EC64C07241C4B13BE7F59446D787CF5 }}
-        package: app.zip
