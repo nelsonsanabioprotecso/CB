@@ -24,7 +24,7 @@ jobs:
 
     - name: Setup Python ${{ env.PYTHON_VERSION }} Environment
       uses: actions/setup-python@v4
-      with::Q!
+      with:
         python-version: ${{ env.PYTHON_VERSION }}
 
     - name: 'Resolve Project Dependencies Using Pip'
