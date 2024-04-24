@@ -11,22 +11,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
+    - uses: actions/checkout@v3
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt --target=".python_packages/lib/site-packages"
-
+        pip install --upgrade pip
+        pip install -r requirements.txt
     - name: Zip the application for deployment
-      run: zip -r app.zip .
-
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        zip -r app.zip . -x '*.git*' '*.github*' '*__pycache__*'
     - name: Upload ZIP as Artifact
       uses: actions/upload-artifact@v3
       with:
@@ -41,7 +38,6 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: deploy-package
-
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
       with:
