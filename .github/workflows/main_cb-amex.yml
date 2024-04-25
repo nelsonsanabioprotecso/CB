@@ -4,7 +4,7 @@ on:
   push
 
 env:
-  AZURE_FUNCTIONAPP_NAME: 'CB-AMEX'  # Cambiar con el nombre real de tu Function App
+  AZURE_FUNCTIONAPP_NAME: 'cb-amex'  # Cambiar con el nombre real de tu Function App
   PYTHON_VERSION: '3.11'             # Usar la versión de Python que corresponda a tu proyecto
 
 jobs:
