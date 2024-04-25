@@ -48,9 +48,9 @@ jobs:
       run: |
         zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*"
 
-    - name: List zip
+    - name: List and Check the size of the zip
       run: |
-        ls -la
+        ls -lh release.zip
         unzip -l release.zip
 
     - name: Upload ZIP as Artifact
