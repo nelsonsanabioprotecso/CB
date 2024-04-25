@@ -28,7 +28,10 @@ jobs:
 
     - name: Zip the application for deployment
       run: |
-        zip -r app.zip . -x "*.git*" -x ".github/**"
+        zip -r app.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*"
+
+    - name: List files to be zipeed
+      run: ls -la
 
     - name: Upload ZIP as Artifact
       uses: actions/upload-artifact@v3
