@@ -57,7 +57,7 @@ jobs:
         name: functionapp-artifact
 
     - name: Unzip artifact for deployment
-      run: unzip release.zip
+      run: unzip functionapp-artifact.zip
 
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
