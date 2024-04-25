@@ -35,7 +35,7 @@ jobs:
 
     - name: Zip the application for deployment
       run: |
-        zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*"
+        zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*" -x ".vscode/*"
 
     - name: List zip
       run: |
@@ -56,7 +56,7 @@ jobs:
       with:
         name: functionapp-artifact
 
-    - name: Unzip artifact for deployment
+    - name: Unzip Release
       run: |
         ls -la
         unzip release.zip
