@@ -44,7 +44,7 @@ jobs:
 
     - name: Exclude unnecessary files and folders
       run: |
-        rm -rf .git/ .github/ .python_packages/ venv/ .gitignore
+        rm -rf .git/ .github/ .python_packages/ .gitignore
 
     - name: Upload ZIP as Artifact
       uses: actions/upload-artifact@v4
