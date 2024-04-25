@@ -4,9 +4,9 @@ on:
   push
 
 env:
-  AZURE_FUNCTIONAPP_NAME: 'CB-AMEX'  
+  AZURE_FUNCTIONAPP_NAME: 'CB-AMEX'  # Cambiar con el nombre real de tu Function App
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
-  PYTHON_VERSION: '3.11'             
+  PYTHON_VERSION: '3.11'             # Usar la versión de Python que corresponda a tu proyecto
 
 jobs:
   build-and-deploy:
@@ -21,21 +21,28 @@ jobs:
 
     - name: Install dependencies
       run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         pip install --upgrade pip
         pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+        popd
 
-    - name: List files to be zipped
+    - name: List files to be zipeed
       run: ls -laR
 
     - name: Zip the application for deployment
       run: |
-        zip -r app.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*"
+        zip -r app.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*"
+
+    - name: List files to be zipeed
+      run: ls -la
 
     - name: Upload ZIP as Artifact
       uses: actions/upload-artifact@v3
       with:
         name: functionapp-artifact
-        path: app.zip
+        path: |
+          app.zip
+          !venv/
 
   deploy:
     needs: build-and-deploy
@@ -45,11 +52,16 @@ jobs:
       with:
         name: functionapp-artifact
 
+    - name: Unzip artifact for deployment
+      run: unzip app.zip
+
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
+      id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        package: app.zip
+        slot-name: 'Production'
+        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
         scm-do-build-during-deployment: true
         enable-oryx-build: true
         website-run-from-package: false
