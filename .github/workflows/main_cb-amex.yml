@@ -20,15 +20,18 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+
     - name: Setup Node.js environment
       uses: actions/setup-node@v4
       with:
         node-version: '20'
 
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+    - name: Install Node.js dependencies
+      run: npm install
 
     - name: List files to be zipped
       run: ls -laR
