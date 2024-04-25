@@ -35,6 +35,9 @@ jobs:
           app.zip
           !venv/
 
+    - name: List files to be zipeed
+      run: ls -lR
+
   deploy:
     needs: build-and-deploy
     runs-on: ubuntu-latest
