@@ -80,6 +80,7 @@ jobs:
       run: |
         ls -la
         unzip -l ./release.zip
+        pip list
 
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
