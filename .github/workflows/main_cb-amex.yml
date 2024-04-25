@@ -45,15 +45,6 @@ jobs:
     - name: List files to be zipped
       run: ls -la
 
-    - name: Zip the application for deployment
-      run: |
-        zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*"
-
-    - name: List zip
-      run: |
-        ls -la
-        unzip -l release.zip
-
     - name: Upload ZIP as Artifact
       uses: actions/upload-artifact@v4
       with:
