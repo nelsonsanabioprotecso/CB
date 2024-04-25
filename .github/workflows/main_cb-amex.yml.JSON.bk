@@ -40,7 +40,7 @@ jobs:
 
     - name: Zip the application for deployment
       run: |
-        zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*"
+        zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*" -x ".vscode/*"
 
     - name: List zip
       run: |
