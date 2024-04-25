@@ -58,10 +58,14 @@ jobs:
   deploy:
     needs: build-and-deploy
     runs-on: ubuntu-latest
+    environment:
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
     steps:
     - uses: actions/download-artifact@v4
       with:
         name: functionapp-artifact
+        path: .
 
     - name: List Release.zip
       run: |
