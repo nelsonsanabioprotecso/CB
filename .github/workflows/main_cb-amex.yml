@@ -24,7 +24,7 @@ jobs:
         pip install -r requirements.txt --target=".python_packages/lib/site-packages"
 
     - name: List files to be zipeed
-      run: ls -lR
+      run: ls -laR
 
     - name: Zip the application for deployment
       run: |
