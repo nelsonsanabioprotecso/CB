@@ -58,10 +58,6 @@ jobs:
   deploy:
     needs: build-and-deploy
     runs-on: ubuntu-latest
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
     steps:
     - uses: actions/download-artifact@v4
       with:
