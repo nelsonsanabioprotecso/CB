@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
@@ -39,7 +39,6 @@ jobs:
     - run: |
         python function_app.py 
         pwd
-        ls -la
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v4
