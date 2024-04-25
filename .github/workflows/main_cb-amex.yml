@@ -27,8 +27,8 @@ jobs:
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+      runs:
+        using: 'node20'
 
     - name: List files to be zipped
       run: ls -laR
