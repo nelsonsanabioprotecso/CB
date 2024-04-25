@@ -5,6 +5,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'cb-amex'  # Cambiar con el nombre real de tu Function App
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
   PYTHON_VERSION: '3.11'             # Usar la versión de Python que corresponda a tu proyecto
 
 jobs:
@@ -20,8 +21,10 @@ jobs:
 
     - name: Install dependencies
       run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         pip install --upgrade pip
         pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+        popd
 
     - name: List files to be zipeed
       run: ls -laR
@@ -48,6 +51,9 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: functionapp-artifact
+
+    - name: Unzip artifact for deployment
+      run: unzip app.zip
 
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
