@@ -62,7 +62,9 @@ jobs:
         name: functionapp-artifact
 
     - name: List Release.zip
-      run: ls -la
+      run: |
+        ls -la
+        unzip -l release.zip
 
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
