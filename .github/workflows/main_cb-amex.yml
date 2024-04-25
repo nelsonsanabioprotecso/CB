@@ -31,7 +31,9 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: functionapp-artifact
-        path: app.zip
+        path: |
+          app.zip
+          !venv/
 
   deploy:
     needs: build-and-deploy
@@ -46,4 +48,6 @@ jobs:
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: app.zip
+        scm-do-build-during-deployment: false
+        enable-oryx-build: false
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0EC64C07241C4B13BE7F59446D787CF5 }}
