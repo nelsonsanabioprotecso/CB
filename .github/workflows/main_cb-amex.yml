@@ -40,7 +40,7 @@ jobs:
 
     - name: Zip the application for deployment
       run: |
-        zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*"
+        zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*"
 
     - name: List zip
       run: |
@@ -61,10 +61,9 @@ jobs:
       with:
         name: functionapp-artifact
 
-    - name: Unzip Release
+    - name: List Release.zip
       run: |
         ls -la
-        unzip release.zip
 
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
