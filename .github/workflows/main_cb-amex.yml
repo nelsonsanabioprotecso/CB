@@ -50,4 +50,5 @@ jobs:
         package: app.zip
         scm-do-build-during-deployment: false
         enable-oryx-build: false
+        website-run-from-package: true
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0EC64C07241C4B13BE7F59446D787CF5 }}
