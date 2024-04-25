@@ -65,12 +65,11 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: functionapp-artifact
-        path: ./release.zip
 
     - name: List Release.zip
       run: |
         ls -la
-        unzip -l release.zip
+        unzip -l ./release.zip
 
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
