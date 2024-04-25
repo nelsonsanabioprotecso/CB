@@ -21,14 +21,16 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
+    - name: Create and start virtual environment
+      run: |
+        source .venv/bin/activate
+
     - name: Install dependencies
       shell: bash
       run: |
-        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         python -m pip install --upgrade pip
         pip install -r requirements.txt --target=".python_packages/lib/site-packages"
         pwd
-        popd
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v4
@@ -62,7 +64,9 @@ jobs:
         name: functionapp-artifact
 
     - name: List Release.zip
-      run: ls -la
+      run: |
+        ls -la
+        unzip -l release.zip
 
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
