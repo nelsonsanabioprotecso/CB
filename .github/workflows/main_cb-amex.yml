@@ -29,13 +29,18 @@ jobs:
 
     - name: Zip the application for deployment
       run: |
-        zip -r app.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*"
+        zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*"
+
+    - name: List zip
+      run: |
+        ls -la
+        unzip -l release.zip
 
     - name: Upload ZIP as Artifact
       uses: actions/upload-artifact@v3
       with:
         name: functionapp-artifact
-        path: app.zip
+        path: release.zip
 
   deploy:
     needs: build-and-deploy
@@ -49,8 +54,7 @@ jobs:
       uses: Azure/functions-action@v1
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        package: app.zip
+        package: release.zip
         scm-do-build-during-deployment: true
         enable-oryx-build: true
-        website-run-from-package: false
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0EC64C07241C4B13BE7F59446D787CF5 }}
