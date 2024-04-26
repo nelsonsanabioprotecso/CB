@@ -26,6 +26,10 @@ jobs:
         #run: |
         #python -m venv venv
         #source venv/bin/activate
+        #- name: 'Login to Azure'
+        #uses: azure/login@v1
+        #with:
+        #creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Install dependencies
       shell: bash
@@ -41,12 +45,6 @@ jobs:
     - run: |
         python function_app.py 
         pwd
-
-
-    - name: 'Login to Azure'
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v4
