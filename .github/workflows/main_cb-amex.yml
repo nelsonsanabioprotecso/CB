@@ -1,7 +1,9 @@
 name: Deploy Python project to Azure Function App
 
 on:
-  push
+  push:
+    branches:
+      - main
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'CB-AMEX'  
@@ -11,7 +13,6 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: prod
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -21,14 +22,31 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
+        #- name: Create and start virtual environment
+        #run: |
+        #python -m venv venv
+        #source venv/bin/activate
+
     - name: Install dependencies
       shell: bash
       run: |
-        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        pushd './.'
         python -m pip install --upgrade pip
         pip install -r requirements.txt --target=".python_packages/lib/site-packages"
-        pwd
+        pip install azure-functions --no-cache-dir
+        pip list
         popd
+        pwd
+
+    - run: |
+        python function_app.py 
+        pwd
+
+
+    - name: 'Login to Azure'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v4
@@ -42,27 +60,33 @@ jobs:
       run: |
         zip -r release.zip . -x "*.git*" -x ".github/*" -x "*.python_packages/*" -x "venv/*"
 
-    - name: List zip
+    - name: List and Check the size of the zip
       run: |
-        ls -la
+        ls -lh release.zip
         unzip -l release.zip
 
     - name: Upload ZIP as Artifact
       uses: actions/upload-artifact@v4
       with:
         name: functionapp-artifact
-        path: release.zip
+        path: |
+          ./release.zip
+          !venv/
 
   deploy:
     needs: build-and-deploy
     runs-on: ubuntu-latest
+    environment: production
     steps:
     - uses: actions/download-artifact@v4
       with:
         name: functionapp-artifact
 
     - name: List Release.zip
-      run: ls -la
+      run: |
+        ls -la
+        unzip -l ./release.zip
+        pip list
 
     - name: Deploy to Azure Functions
       uses: Azure/functions-action@v1
@@ -71,5 +95,5 @@ jobs:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: release.zip
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-        scm-do-build-during-deployment: true
+        scm-do-build-during-deployment: false
         enable-oryx-build: true
